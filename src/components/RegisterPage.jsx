@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import '../styles/RegisterStyles.css';
+import '../styles/FormStyles.css';
 
 function RegisterPage() {
-  const [nombre, setNombre] = useState('');
-  const [apellidos, setApellidos] = useState('');
+  const [nombres, setNombres] = useState('');
+  const [correo, setCorreo] = useState('');
   const [contrasena, setContrasena] = useState('');
   const [confirmar, setConfirmar] = useState('');
   const [error, setError] = useState('');
@@ -11,6 +11,7 @@ function RegisterPage() {
   const handleRegister = async (e) => {
     e.preventDefault();
     setError('');
+
     if (contrasena !== confirmar) {
       setError('❌ Las contraseñas no coinciden');
       return;
@@ -22,9 +23,11 @@ function RegisterPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ nombre, apellidos, contrasena }),
+        body: JSON.stringify({ nombres, correo, contrasena }),
       });
+
       const data = await res.json();
+
       if (res.ok) {
         alert('✅ ' + data.message);
         window.location.href = '/login';
@@ -37,58 +40,73 @@ function RegisterPage() {
   };
 
   return (
-    <div className="register-root">
-      <div className="register-container">
-        <div className="register-left">
-          <h1 className="register-title">REGISTRO</h1>
-          <form className="register-form" onSubmit={handleRegister}>
-            <div className="input-group">
-              <label>Nombre</label>
-              <input
-                type="text"
-                placeholder="Nombre"
-                value={nombre}
-                onChange={(e) => setNombre(e.target.value)}
-                required
-              />
-            </div>
-            <div className="input-group">
-              <label>Apellidos</label>
-              <input
-                type="text"
-                placeholder="Apellidos"
-                value={apellidos}
-                onChange={(e) => setApellidos(e.target.value)}
-                required
-              />
-            </div>
-            <div className="input-group">
-              <label>contraseña</label>
-              <input
-                type="password"
-                placeholder="********"
-                value={contrasena}
-                onChange={(e) => setContrasena(e.target.value)}
-                required
-              />
-            </div>
-            <div className="input-group">
-              <label>confirmar contraseña</label>
-              <input
-                type="password"
-                placeholder="********"
-                value={confirmar}
-                onChange={(e) => setConfirmar(e.target.value)}
-                required
-              />
-            </div>
-            {error && <div className="register-error">{error}</div>}
-            <button type="submit" className="register-btn">Registrarse</button>
-          </form>
+    <div className="form-section">
+      <div className="image-side">
+        <img src="/assets/login2.jpg" alt="Register Visual" />
+        <div className="image-overlay">
+          <h1>Bienvenido</h1>
+          <p>Únete a nuestra comunidad y comienza tu viaje</p>
         </div>
-        <div className="register-right">
-          <img src="/assets/login2.jpg" alt="Register Visual" />
+      </div>
+      <div className="form-container">
+        <div className="form-header">
+          <h2>Crear Cuenta</h2>
+          <p>Regístrate para acceder a todas las funcionalidades</p>
         </div>
+        {error && <div className="error-message">{error}</div>}
+        <form onSubmit={handleRegister}>
+          <div className="input-group">
+            <label>Nombre completo</label>
+            <input
+              type="text"
+              placeholder="Ingrese su nombre"
+              value={nombres}
+              onChange={(e) => setNombres(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="input-group">
+            <label>Correo electrónico</label>
+            <input
+              type="email"
+              placeholder="Ingrese su correo"
+              value={correo}
+              onChange={(e) => setCorreo(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="input-group">
+            <label>Contraseña</label>
+            <input
+              type="password"
+              placeholder="Ingrese su contraseña"
+              value={contrasena}
+              onChange={(e) => setContrasena(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="input-group">
+            <label>Confirmar contraseña</label>
+            <input
+              type="password"
+              placeholder="Confirme su contraseña"
+              value={confirmar}
+              onChange={(e) => setConfirmar(e.target.value)}
+              required
+            />
+          </div>
+
+          <button type="submit" className="primary-btn">
+            <span>Registrarme</span>
+          </button>
+
+          <p className="switch-form">
+            ¿Ya tienes cuenta? <a href="/login">Inicia sesión</a>
+          </p>
+        </form>
       </div>
     </div>
   );
