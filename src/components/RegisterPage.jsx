@@ -1,17 +1,18 @@
 import { useState } from 'react';
-import '../styles/FormStyles.css';
+import '../styles/RegisterStyles.css';
 
 function RegisterPage() {
-  const [nombres, setNombres] = useState('');
-  const [correo, setCorreo] = useState('');
+  const [nombre, setNombre] = useState('');
+  const [apellidos, setApellidos] = useState('');
   const [contrasena, setContrasena] = useState('');
   const [confirmar, setConfirmar] = useState('');
+  const [error, setError] = useState('');
 
   const handleRegister = async (e) => {
     e.preventDefault();
-
+    setError('');
     if (contrasena !== confirmar) {
-      alert('❌ Las contraseñas no coinciden');
+      setError('❌ Las contraseñas no coinciden');
       return;
     }
 
@@ -21,80 +22,71 @@ function RegisterPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ nombres, correo, contrasena }),
+        body: JSON.stringify({ nombre, apellidos, contrasena }),
       });
-
       const data = await res.json();
-
       if (res.ok) {
         alert('✅ ' + data.message);
         window.location.href = '/login';
       } else {
-        alert('❌ ' + data.message);
+        setError('❌ ' + data.message);
       }
     } catch (err) {
-      alert('Error de conexión con el servidor.');
+      setError('Error de conexión con el servidor.');
     }
   };
 
   return (
-    <div className="form-section">
-      <div className="form-container">
-        <div className="form-header">
-          <h2>Registro</h2>
-          <p>Crear una nueva cuenta</p>
-        </div>
-        <form onSubmit={handleRegister}>
+    <div className="register-root">
+      <div className="register-left">
+        <h1 className="register-title">REGISTRO</h1>
+        <form className="register-form" onSubmit={handleRegister}>
           <div className="input-group">
-            <label>Nombres</label>
+            <label>Nombre</label>
             <input
               type="text"
-              placeholder="Ingresa tus nombres"
-              value={nombres}
-              onChange={(e) => setNombres(e.target.value)}
+              placeholder="Nombre"
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
               required
             />
           </div>
           <div className="input-group">
-            <label>Correo</label>
+            <label>Apellidos</label>
             <input
-              type="email"
-              placeholder="Ingresa tu correo"
-              value={correo}
-              onChange={(e) => setCorreo(e.target.value)}
+              type="text"
+              placeholder="Apellidos"
+              value={apellidos}
+              onChange={(e) => setApellidos(e.target.value)}
               required
             />
           </div>
           <div className="input-group">
-            <label>Contraseña</label>
+            <label>contraseña</label>
             <input
               type="password"
-              placeholder="Ingresa tu contraseña"
+              placeholder="********"
               value={contrasena}
               onChange={(e) => setContrasena(e.target.value)}
               required
             />
           </div>
           <div className="input-group">
-            <label>Confirmar Contraseña</label>
+            <label>confirmar contraseña</label>
             <input
               type="password"
-              placeholder="Confirma tu contraseña"
+              placeholder="********"
               value={confirmar}
               onChange={(e) => setConfirmar(e.target.value)}
               required
             />
           </div>
-          <button type="submit" className="primary-btn">
-            Registrarse
-          </button>
+          {error && <div className="register-error">{error}</div>}
+          <button type="submit" className="register-btn">Registrarse</button>
         </form>
-        <div className="switch-form">
-          <p>¿Ya tienes una cuenta? <a href="/login">Inicia sesión</a></p>
-        </div>
       </div>
-      <div className="image-side">
-        <img src="/images/register-image.jpg" alt="Registro" />
+      <div className="register-right">
+        <img src="/assets/login2.jpg" alt="Register Visual" />
       </div>
     </div>
   );
