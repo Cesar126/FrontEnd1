@@ -1,91 +1,100 @@
 import { useState } from 'react';
-import '../styles/RegisterStyles.css';
+import '../styles/FormStyles.css';
 
 function RegisterPage() {
-  const [nombre, setNombre] = useState('');
-  const [apellidos, setApellidos] = useState('');
+  const [nombres, setNombres] = useState('');
+  const [correo, setCorreo] = useState('');
   const [contrasena, setContrasena] = useState('');
   const [confirmar, setConfirmar] = useState('');
-  const [error, setError] = useState('');
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    setError('');
+
     if (contrasena !== confirmar) {
-      setError('❌ Las contraseñas no coinciden');
+      alert('❌ Las contraseñas no coinciden');
       return;
     }
+
     try {
       const res = await fetch('http://localhost:8000/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ nombre, apellidos, contrasena }),
+        body: JSON.stringify({ nombres, correo, contrasena }),
       });
+
       const data = await res.json();
+
       if (res.ok) {
         alert('✅ ' + data.message);
         window.location.href = '/login';
       } else {
-        setError('❌ ' + data.message);
+        alert('❌ ' + data.message);
       }
     } catch (err) {
-      setError('Error de conexión con el servidor.');
+      alert('Error de conexión con el servidor.');
     }
   };
 
   return (
-    <div className="register-root">
-      <div className="register-left">
-        <h1 className="register-title">REGISTRO</h1>
-        <form className="register-form" onSubmit={handleRegister}>
+    <div className="form-section">
+      <div className="form-container">
+        <div className="form-header">
+          <h2>Registro</h2>
+          <p>Crear una nueva cuenta</p>
+        </div>
+        <form onSubmit={handleRegister}>
           <div className="input-group">
-            <label>Nombre</label>
+            <label>Nombres</label>
             <input
               type="text"
-              placeholder="Nombre"
-              value={nombre}
-              onChange={(e) => setNombre(e.target.value)}
+              placeholder="Ingresa tus nombres"
+              value={nombres}
+              onChange={(e) => setNombres(e.target.value)}
               required
             />
           </div>
           <div className="input-group">
-            <label>Apellidos</label>
+            <label>Correo</label>
             <input
-              type="text"
-              placeholder="Apellidos"
-              value={apellidos}
-              onChange={(e) => setApellidos(e.target.value)}
+              type="email"
+              placeholder="Ingresa tu correo"
+              value={correo}
+              onChange={(e) => setCorreo(e.target.value)}
               required
             />
           </div>
           <div className="input-group">
-            <label>contraseña</label>
+            <label>Contraseña</label>
             <input
               type="password"
-              placeholder="********"
+              placeholder="Ingresa tu contraseña"
               value={contrasena}
               onChange={(e) => setContrasena(e.target.value)}
               required
             />
           </div>
           <div className="input-group">
-            <label>confirmar contraseña</label>
+            <label>Confirmar Contraseña</label>
             <input
               type="password"
-              placeholder="********"
+              placeholder="Confirma tu contraseña"
               value={confirmar}
               onChange={(e) => setConfirmar(e.target.value)}
               required
             />
           </div>
-          {error && <div className="register-error">{error}</div>}
-          <button type="submit" className="register-btn">Registrarse</button>
+          <button type="submit" className="primary-btn">
+            Registrarse
+          </button>
         </form>
+        <div className="switch-form">
+          <p>¿Ya tienes una cuenta? <a href="/login">Inicia sesión</a></p>
+        </div>
       </div>
-      <div className="register-right">
-        <img src="/assets/login2.jpg" alt="Register Visual" />
+      <div className="image-side">
+        <img src="/images/register-image.jpg" alt="Registro" />
       </div>
     </div>
   );

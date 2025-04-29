@@ -22,3 +22,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+<<<<<<< HEAD
+=======
+
+/src/component/DashboardPage.jsx
+/src/component/RegisterPage.jsx
+
+>>>>>>> 87bf4d712d869d0259ccf9bb3e59ae42b9e97ad8
