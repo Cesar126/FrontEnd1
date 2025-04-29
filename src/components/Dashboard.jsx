@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../styles/Dashboard.css';
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -28,37 +29,23 @@ function Dashboard() {
   };
 
   return (
-    <div>
-      {/* Barra superior */}
-      <header style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        backgroundColor: '#1E1E1E',
-        color: 'white',
-        padding: '10px 20px'
-      }}>
+    <div className="dashboard-container">
+      <header className="dashboard-header">
         <h2>Bienvenido, {nombreUsuario}</h2>
         <button 
           onClick={handleLogout}
-          style={{
-            padding: '8px 16px',
-            backgroundColor: '#E94E4E',
-            color: 'white',
-            border: 'none',
-            borderRadius: '6px',
-            cursor: 'pointer',
-            fontWeight: 'bold',
-          }}
+          className="logout-button"
         >
           Cerrar Sesión
         </button>
       </header>
 
-      {/* Contenido principal */}
-      <main style={{ padding: '40px' }}>
-        <h1>Dashboard principal</h1>
-        {/* Aquí agregas el contenido que quieras */}
+      <main className="dashboard-content">
+        <h1 className="dashboard-title">Dashboard Principal</h1>
+        <div className="dashboard-card">
+          <h3>Resumen de Actividad</h3>
+          <p>Bienvenido a tu panel de control personalizado.</p>
+        </div>
       </main>
     </div>
   );
